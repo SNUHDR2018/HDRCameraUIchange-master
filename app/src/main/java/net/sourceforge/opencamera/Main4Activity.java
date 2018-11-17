@@ -1,7 +1,5 @@
 package net.sourceforge.opencamera;
 
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +17,6 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.photo.Photo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +30,9 @@ import static org.opencv.core.CvType.CV_32FC1;
 import static org.opencv.core.CvType.CV_32FC3;
 import static org.opencv.core.CvType.CV_8UC1;
 import static org.opencv.core.CvType.CV_8UC3;
+
+
+
 public class Main4Activity extends Activity {
 
     ArrayList<byte []> x = new ArrayList<>();
@@ -51,11 +51,10 @@ public class Main4Activity extends Activity {
             x.add(ss.getByteArrayExtra("b3"));
 
             if (x.size()==3) {
-                Log.d(TAG, "Main4Activity image size is 5");
+                Log.d(TAG, "Main4Activity image size is 3");
                 Mat mat1= new Mat();
                 Mat mat2= new Mat();
                 Mat mat3= new Mat();
-
 
                 ArrayList<Bitmap> xx = new ArrayList<>();
                 xx.add(BitmapFactory.decodeByteArray(x.get(0), 0, x.get(0).length));
@@ -65,13 +64,10 @@ public class Main4Activity extends Activity {
                 Bitmap bmp1 = xx.get(0).copy(Bitmap.Config.ARGB_8888, true);
                 Bitmap bmp2 = xx.get(1).copy(Bitmap.Config.ARGB_8888, true);
                 Bitmap bmp3 = xx.get(2).copy(Bitmap.Config.ARGB_8888, true);
-
-
                 Utils.bitmapToMat(bmp1, mat1);
                 Utils.bitmapToMat(bmp2, mat2);
                 //8UC4, RGBA format
                 Utils.bitmapToMat(bmp3, mat3);
-
 
                 Imgproc.cvtColor(mat1,mat1,Imgproc.COLOR_RGBA2RGB);
                 Imgproc.cvtColor(mat2,mat2,Imgproc.COLOR_RGBA2RGB);
@@ -83,8 +79,7 @@ public class Main4Activity extends Activity {
                 images.add(mat1);
                 images.add(mat2);
                 images.add(mat3);
-
-                Mat resultImage = exposureFusion(images, 1,1,1,3);
+                Mat resultImage = exposureFusion(images, 1,1,1,8);
 
                 Bitmap bmp = Bitmap.createBitmap(resultImage.cols(), resultImage.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(resultImage, bmp);

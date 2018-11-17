@@ -6,49 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".Main3Activity">
 
-    <ImageView
-        android:id="@+id/i1"
-        android:layout_width = "380dp"
-        android:layout_height="466dp"
-        android:scaleType = "fitCenter"
-        android:adjustViewBounds="true"
-        android:layout_marginBottom="60dp"
-        android:src="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+    <Button
+        android:id="@+id/merge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="original"
         />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="134dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="125dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginRight="125dp"
-        android:layout_marginBottom="16dp"
-        android:text="Original"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        app:layout_constraintBottom_toTopOf="@+id/i1"
+    <ImageView
+        android:id="@+id/i1"
+        android:layout_width="445dp"
+        android:layout_height="497dp"
+        android:src="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/merge"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:scaleType="fitCenter"
+        />
 
     <Button
         android:id="@+id/button"
-        android:onClick="next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="280dp"
         android:layout_marginLeft="280dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="4dp"
+        android:onClick="next"
         android:text="next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

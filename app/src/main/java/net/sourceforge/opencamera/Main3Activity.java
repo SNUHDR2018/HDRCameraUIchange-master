@@ -85,7 +85,7 @@ public class Main3Activity extends Activity {
                 //Utils.matToBitmap(resultImage, bmp);
 
                 ImageView img1 = findViewById(R.id.i1);
-                img1.setImageBitmap(bmp3);
+                img1.setImageBitmap(bmp2);
                 img1.setRotation(90);
 
             }

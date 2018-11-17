@@ -1,16 +1,10 @@
 package net.sourceforge.opencamera;
 
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,12 +16,9 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.opencv.core.Core.BORDER_REPLICATE;
 import static org.opencv.core.CvType.CV_32F;
@@ -66,12 +57,9 @@ public class Main5Activity extends Activity {
                 xx.add(BitmapFactory.decodeByteArray(x.get(1), 0, x.get(1).length));
                 xx.add(BitmapFactory.decodeByteArray(x.get(2), 0, x.get(2).length));
 
-
                 Bitmap bmp1 = xx.get(0).copy(Bitmap.Config.ARGB_8888, true);
                 Bitmap bmp2 = xx.get(1).copy(Bitmap.Config.ARGB_8888, true);
                 Bitmap bmp3 = xx.get(2).copy(Bitmap.Config.ARGB_8888, true);
-
-
                 Utils.bitmapToMat(bmp1, mat1);
                 Utils.bitmapToMat(bmp2, mat2);
                 //8UC4, RGBA format
@@ -82,15 +70,17 @@ public class Main5Activity extends Activity {
                 Imgproc.cvtColor(mat3,mat3,Imgproc.COLOR_RGBA2RGB);
 
 
+
                 List<Mat> images = new ArrayList<Mat>();
                 images.add(mat1);
                 images.add(mat2);
                 images.add(mat3);
-
                 Mat resultImage = exposureFusion(images, 1,1,1,3);
 
                 Bitmap bmp = Bitmap.createBitmap(resultImage.cols(), resultImage.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(resultImage, bmp);
+
+
 
                 ImageView img1 = findViewById(R.id.i1);
                 img1.setImageBitmap(bmp);
@@ -107,9 +97,6 @@ public class Main5Activity extends Activity {
     }
 
 
-    public void prev(View view) {
-    }
-
     private Mat exposureFusion (List<Mat> images, double w_c, double w_s, double w_e, int depth)
     {
         if(images.size()<2)
@@ -123,7 +110,7 @@ public class Main5Activity extends Activity {
         {
             if(!images.get(i).size().equals(size))
             {
-                System.out.println("Input images have to be of the same size");
+                //print("Input images have to be of the same size");
                 return null;
             }
         }
@@ -374,7 +361,5 @@ public class Main5Activity extends Activity {
         }
         return img;
     }
-
-
 
 }

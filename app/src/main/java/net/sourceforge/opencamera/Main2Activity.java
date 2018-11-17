@@ -107,19 +107,6 @@ public class Main2Activity extends Activity {
             img3.setImageBitmap(bitmap3);
             //img3.setRotation(90);
 
-            arr.add(ss.getByteArrayExtra("B4"));
-            Log.d(TAG, "B4 passed to Main2Activity");
-            Bitmap bitmap4 = BitmapFactory.decodeByteArray(arr.get(3), 0, arr.get(3).length);
-            arr2.add(bitmap4);
-            ImageView img4 = findViewById(R.id.img4);
-            img4.setImageBitmap(bitmap4);
-
-            arr.add(ss.getByteArrayExtra("B5"));
-            Log.d(TAG, "B5 passed to Main2Activity");
-            Bitmap bitmap5 = BitmapFactory.decodeByteArray(arr.get(4), 0, arr.get(4).length);
-            arr2.add(bitmap5);
-            ImageView img5 = findViewById(R.id.img5);
-            img5.setImageBitmap(bitmap5);
 
 
 
@@ -162,13 +149,12 @@ public class Main2Activity extends Activity {
         //Intent hdrAct2 = new Intent(this, Main4Activity.class);
         //Intent hdrAct3 = new Intent(this, Main5Activity.class);
 
-        if (arr.size() == 5) {
-            Log.d(TAG, "arr size is 5 and now passing");
+        if (arr.size() == 3) {
+            Log.d(TAG, "arr size is 3 and now passing");
             hdrAct.putExtra("b1", arr.get(0));
             hdrAct.putExtra("b2", arr.get(1));
             hdrAct.putExtra("b3", arr.get(2));
-            hdrAct.putExtra("b4", arr.get(3));
-            hdrAct.putExtra("b5", arr.get(4));
+
 
 
             /*hdrAct2.putExtra("b1", arr.get(0));

@@ -2305,7 +2305,7 @@ public class MainActivity extends Activity {
             Intent ss = new Intent(this, Main2Activity.class);
             System.out.println("images passed are "+images.size());
 			Log.d(TAG, "images passed are "+images.size());
-			if (images.size() == 5) {
+			if (images.size() == 3) {
 				Log.d(TAG, "images received is five");
 				byte[] B1 = images.get(0);
 				Log.d(TAG, "got it1");
@@ -2313,10 +2313,7 @@ public class MainActivity extends Activity {
 				Log.d(TAG, "got it2");
 				byte[] B3 = images.get(2);
 				Log.d(TAG, "got it3");
-				byte[] B4 = images.get(3);
-				Log.d(TAG, "got it4");
-				byte[] B5 = images.get(4);
-				Log.d(TAG, "got it5");
+
 				if (B1 == null || B1.length == 0) {
                     Log.d(TAG, "no B1");
                 }
@@ -2348,10 +2345,7 @@ public class MainActivity extends Activity {
 				Log.d(TAG, "put B2");
 				ss.putExtra("B3", B3);
 				Log.d(TAG, "put B3");
-				ss.putExtra("B4", B4);
-				Log.d(TAG, "put B4");
-				ss.putExtra("B5", B5);
-				Log.d(TAG, "put B5");
+
 
 			}
 

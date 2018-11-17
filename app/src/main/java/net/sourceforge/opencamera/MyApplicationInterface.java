@@ -2195,16 +2195,14 @@ public class MyApplicationInterface extends BasicApplicationInterface {
 
 		System.gc();
 
-		if (images.size() == 5) {
+		if (images.size() == 3) {
 			Log.d(TAG, "images 5");
 			main_activity.images.add(images.get(0));
 			main_activity.images.add(images.get(1));
 			main_activity.images.add(images.get(2));
-			main_activity.images.add(images.get(3));
-			main_activity.images.add(images.get(4));
 		}
 		else {
-			Log.d(TAG, "images not 5");
+			Log.d(TAG, "images not 3");
 		}
 
         boolean image_capture_intent = isImageCaptureIntent();
@@ -2376,8 +2374,8 @@ public class MyApplicationInterface extends BasicApplicationInterface {
     
     @Override
 	public boolean onBurstPictureTaken(List<byte []> images, Date current_date) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "onBurstPictureTaken: received " + images.size() + " images");
+
+		Log.d(TAG, "onBurstPictureTaken: received " + images.size() + " images");
 
 		boolean success;
 		PhotoMode photo_mode = getPhotoMode();

@@ -36,8 +36,8 @@ public class CameraController1 extends CameraController {
 	private final List<byte []> pending_burst_images = new ArrayList<>(); // burst images that have been captured so far, but not yet sent to the application
 	private List<Integer> burst_exposures;
 	private boolean want_expo_bracketing;
-	private final static int max_expo_bracketing_n_images = 5; // seem to have problems with 5 images in some cases, e.g., images coming out same brightness on OnePlus 3T
-	private int expo_bracketing_n_images = 5;
+	private final static int max_expo_bracketing_n_images = 3; // seem to have problems with 5 images in some cases, e.g., images coming out same brightness on OnePlus 3T
+	private int expo_bracketing_n_images = 3;
 	private double expo_bracketing_stops = 2.0;
 
 	// we keep track of some camera settings rather than reading from Camera.getParameters() every time. Firstly this is important
@@ -1595,6 +1595,8 @@ public class CameraController1 extends CameraController {
 
 				if( want_expo_bracketing && n_burst > 1 ) {
 					pending_burst_images.add(data);
+					Log.d(TAG, "pending_burst_images"+pending_burst_images.size());
+					
 					if( pending_burst_images.size() >= n_burst ) { // shouldn't ever be greater, but just in case
 						if( MyDebug.LOG )
 							Log.d(TAG, "all burst images available");
@@ -1621,6 +1623,7 @@ public class CameraController1 extends CameraController {
 							images.add(pending_burst_images.get(n_half_images+1));
 						}
 
+						Log.d(TAG, "take Picture Now size of images"+images.size());
 						picture.onBurstPictureTaken(images);
 						pending_burst_images.clear();
 						picture.onCompleted();
@@ -1688,6 +1691,9 @@ public class CameraController1 extends CameraController {
 			if( MyDebug.LOG )
 				Log.d(TAG, "set up expo bracketing");
 			Camera.Parameters parameters = this.getParameters();
+
+			Log.d(TAG, "takePicture expo_bracketing_n_images"+expo_bracketing_n_images);
+
 			int n_half_images = expo_bracketing_n_images/2;
 			int min_exposure = parameters.getMinExposureCompensation();
 			int max_exposure = parameters.getMaxExposureCompensation();
@@ -1708,6 +1714,10 @@ public class CameraController1 extends CameraController {
 			// do the current exposure first, so we can take the first shot immediately
 			// if we change the order, remember to update the code that re-orders for passing resultant images back to picture.onBurstPictureTaken()
 			requests.add(exposure_current);
+			//requests.add(-10);
+			//requests.add(-20);
+			//requests.add(10);
+			//requests.add(20);
 
 			// darker images
 			for(int i=0;i<n_half_images;i++) {

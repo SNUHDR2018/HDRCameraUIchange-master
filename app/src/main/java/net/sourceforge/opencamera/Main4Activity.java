@@ -49,42 +49,33 @@ public class Main4Activity extends Activity {
             x.add(ss.getByteArrayExtra("b1"));
             x.add(ss.getByteArrayExtra("b2"));
             x.add(ss.getByteArrayExtra("b3"));
-            x.add(ss.getByteArrayExtra("b4"));
-            x.add(ss.getByteArrayExtra("b5"));
 
-            if (x.size()==5) {
+            if (x.size()==3) {
                 Log.d(TAG, "Main4Activity image size is 5");
                 Mat mat1= new Mat();
                 Mat mat2= new Mat();
                 Mat mat3= new Mat();
-                Mat mat4 = new Mat();
-                Mat mat5 = new Mat();
+
 
                 ArrayList<Bitmap> xx = new ArrayList<>();
                 xx.add(BitmapFactory.decodeByteArray(x.get(0), 0, x.get(0).length));
                 xx.add(BitmapFactory.decodeByteArray(x.get(1), 0, x.get(1).length));
                 xx.add(BitmapFactory.decodeByteArray(x.get(2), 0, x.get(2).length));
-                xx.add(BitmapFactory.decodeByteArray(x.get(3), 0, x.get(3).length));
-                xx.add(BitmapFactory.decodeByteArray(x.get(4), 0, x.get(4).length));
 
                 Bitmap bmp1 = xx.get(0).copy(Bitmap.Config.ARGB_8888, true);
                 Bitmap bmp2 = xx.get(1).copy(Bitmap.Config.ARGB_8888, true);
                 Bitmap bmp3 = xx.get(2).copy(Bitmap.Config.ARGB_8888, true);
-                Bitmap bmp4 = xx.get(3).copy(Bitmap.Config.ARGB_8888, true);
-                Bitmap bmp5 = xx.get(4).copy(Bitmap.Config.ARGB_8888, true);
+
 
                 Utils.bitmapToMat(bmp1, mat1);
                 Utils.bitmapToMat(bmp2, mat2);
                 //8UC4, RGBA format
                 Utils.bitmapToMat(bmp3, mat3);
-                Utils.bitmapToMat(bmp4, mat4);
-                Utils.bitmapToMat(bmp5, mat5);
+
 
                 Imgproc.cvtColor(mat1,mat1,Imgproc.COLOR_RGBA2RGB);
                 Imgproc.cvtColor(mat2,mat2,Imgproc.COLOR_RGBA2RGB);
                 Imgproc.cvtColor(mat3,mat3,Imgproc.COLOR_RGBA2RGB);
-                Imgproc.cvtColor(mat4,mat4,Imgproc.COLOR_RGBA2RGB);
-                Imgproc.cvtColor(mat5,mat5,Imgproc.COLOR_RGBA2RGB);
 
 
 
@@ -92,8 +83,7 @@ public class Main4Activity extends Activity {
                 images.add(mat1);
                 images.add(mat2);
                 images.add(mat3);
-                images.add(mat4);
-                images.add(mat5);
+
                 Mat resultImage = exposureFusion(images, 1,1,1,3);
 
                 Bitmap bmp = Bitmap.createBitmap(resultImage.cols(), resultImage.rows(), Bitmap.Config.ARGB_8888);
@@ -109,13 +99,12 @@ public class Main4Activity extends Activity {
     }
 
     public void next(View view) {
-        Intent next = new Intent(this, Main5Activity.class);
-        next.putExtra("b1", x.get(0));
-        next.putExtra("b2", x.get(1));
-        next.putExtra("b3", x.get(2));
-        next.putExtra("b4", x.get(3));
-        next.putExtra("b5", x.get(4));
-        startActivity(next);
+        Intent nextt = new Intent(this, Main5Activity.class);
+        nextt.putExtra("b1", x.get(0));
+        nextt.putExtra("b2", x.get(1));
+        nextt.putExtra("b3", x.get(2));
+        Log.d(TAG, "images passsed to main activity5");
+        startActivity(nextt);
     }
 
     public void prev(View view) {

@@ -2301,8 +2301,9 @@ public class MainActivity extends Activity {
     public void clickedGallery(View view) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "clickedGallery");
+		Intent ss = new Intent(this, Main2Activity.class);
 		if (applicationInterface.getPhotoMode() == MyApplicationInterface.PhotoMode.ExpoBracketing) {
-            Intent ss = new Intent(this, Main2Activity.class);
+            //Intent ss = new Intent(this, Main2Activity.class);
             System.out.println("images passed are "+images.size());
 			Log.d(TAG, "images passed are "+images.size());
 			if (images.size() == 3) {
@@ -2346,14 +2347,15 @@ public class MainActivity extends Activity {
 				ss.putExtra("B3", B3);
 				Log.d(TAG, "put B3");
 
-
+				images = new ArrayList<>();
 			}
 
             startActivity(ss);
 
 		}
 		else {
-			openGallery();
+			startActivity(ss);
+			//openGallery();
 		}
 	}
 

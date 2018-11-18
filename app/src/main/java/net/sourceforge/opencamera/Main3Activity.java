@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.opencv.android.Utils;
@@ -87,6 +88,10 @@ public class Main3Activity extends Activity {
                 ImageView img1 = findViewById(R.id.i1);
                 img1.setImageBitmap(bmp2);
                 img1.setRotation(90);
+                img1.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                img1.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+                img1.setAdjustViewBounds(true);
+                img1.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             }
 

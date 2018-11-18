@@ -1,9 +1,12 @@
 package net.sourceforge.opencamera;
 
+import android.content.ClipData;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Activity;
+import android.provider.MediaStore;
+import android.support.v4.content.PermissionChecker;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.os.Bundle;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ import java.util.List;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
@@ -64,6 +69,7 @@ import static org.opencv.core.CvType.*;
 public class Main2Activity extends Activity {
     ArrayList<byte []> arr = new ArrayList<>();
     ArrayList<Bitmap> arr2 = new ArrayList<>();
+    int image = 0;
 
     private static final String TAG = "Main2Activity";
 
@@ -114,6 +120,12 @@ public class Main2Activity extends Activity {
             //arr.add(ss.getByteArrayExtra("B2"));
             //arr.add(ss.getByteArrayExtra("B3"));
         }
+        else {
+
+            Toast.makeText(getApplicationContext(), "choose each image to add image", Toast.LENGTH_SHORT).show();
+
+
+        }
         //arr.add(ss.getByteArrayExtra("1"));
         //arr.add(ss.getByteArrayExtra("2"));
         //arr.add(ss.getByteArrayExtra("3"));
@@ -142,12 +154,99 @@ public class Main2Activity extends Activity {
         }*/
 
     }
+    public void first_image(View view) {
+        image = 1;
+        getImage();
+    }
+
+    public void second_image(View view) {
+        image = 2;
+        getImage();
+    }
+
+    public void last_image(View view) {
+        image = 3;
+        getImage();
+    }
+
+    private void getImage(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(Intent.createChooser(intent, "choose 3 images for bracketing(original image in the middle)"), 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            try {
+                arr.add(readBytes(uri));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Log.d(TAG, String.valueOf(bitmap));
+
+                if (image == 0) {
+
+                }
+                else if (image == 1) {
+                    ImageView img1 = findViewById(R.id.img1);
+                    img1.setImageBitmap(bitmap);
+
+
+                }
+                else if (image == 2) {
+                    ImageView img2 = findViewById(R.id.img2);
+                    img2.setImageBitmap(bitmap);
+                }
+                else {
+                    ImageView img2 = findViewById(R.id.img3);
+                    img2.setImageBitmap(bitmap);
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public byte[] readBytes(Uri uri) throws IOException {
+        // this dynamically extends to take the bytes you read
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+
+        // this is storage overwritten on each iteration with bytes
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        // we need to know how may bytes were read to write them to the byteBuffer
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+
+        // and then we can return your byte array.
+        return byteBuffer.toByteArray();
+    }
+
 
     public void doHdrImaging(View view) {
 
+        while (arr.size()>3) {
+            arr.remove(0);
+            if (arr.size() == 3) {
+                break;
+            }
+        }
+
         Intent hdrAct = new Intent(this, Main3Activity.class);
-        //Intent hdrAct2 = new Intent(this, Main4Activity.class);
-        //Intent hdrAct3 = new Intent(this, Main5Activity.class);
+
 
         if (arr.size() == 3) {
             Log.d(TAG, "arr size is 3 and now passing");
@@ -155,19 +254,6 @@ public class Main2Activity extends Activity {
             hdrAct.putExtra("b2", arr.get(1));
             hdrAct.putExtra("b3", arr.get(2));
 
-
-
-            /*hdrAct2.putExtra("b1", arr.get(0));
-            hdrAct2.putExtra("b2", arr.get(1));
-            hdrAct2.putExtra("b3", arr.get(2));
-            hdrAct2.putExtra("b4", arr.get(3));
-            hdrAct2.putExtra("b5", arr.get(4));
-
-            hdrAct3.putExtra("b1", arr.get(0));
-            hdrAct3.putExtra("b2", arr.get(1));
-            hdrAct3.putExtra("b3", arr.get(2));
-            hdrAct3.putExtra("b4", arr.get(3));
-            hdrAct3.putExtra("b5", arr.get(4));*/
         }
         startActivity(hdrAct);
 
@@ -239,6 +325,8 @@ public class Main2Activity extends Activity {
              */
 
     }
+
+
 
     /*private Mat exposureFusion (List<Mat> images, double w_c, double w_s, double w_e, int depth)
     {

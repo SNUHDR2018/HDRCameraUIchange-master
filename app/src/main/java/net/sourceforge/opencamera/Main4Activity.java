@@ -3,11 +3,17 @@ package net.sourceforge.opencamera;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -18,9 +24,12 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.opencv.core.Core.BORDER_REFLECT;
 import static org.opencv.core.Core.BORDER_REPLICATE;
@@ -37,6 +46,7 @@ public class Main4Activity extends Activity {
 
     ArrayList<byte []> x = new ArrayList<>();
     private static final String TAG = "Main4Activity";
+    Bitmap k;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +94,15 @@ public class Main4Activity extends Activity {
                 Bitmap bmp = Bitmap.createBitmap(resultImage.cols(), resultImage.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(resultImage, bmp);
 
+                k  = bmp;
+
                 ImageView img1 = findViewById(R.id.i1);
                 img1.setImageBitmap(bmp);
                 img1.setRotation(90);
+                img1.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                img1.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+                img1.setAdjustViewBounds(true);
+                img1.setScaleType(ImageView.ScaleType.FIT_CENTER);
             }
 
         }
@@ -102,8 +118,49 @@ public class Main4Activity extends Activity {
         startActivity(nextt);
     }
 
-    public void prev(View view) {
+    public void save(View view) {
+        if (k != null) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap re = Bitmap.createBitmap(k, 0, 0, k.getWidth(), k.getHeight(), matrix, true);
+            saveImageToExternalStorage(re);
+            Toast.makeText(getApplicationContext(), "Saved successfully, Check gallery", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    private void saveImageToExternalStorage(Bitmap finalBitmap) {
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        File myDir = new File(root + "/saved_images_1");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        // Tell the media scanner about the new file so that it is
+        // immediately available to the user.
+        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+
+    }
+
+
 
     private Mat exposureFusion (List<Mat> images, double w_c, double w_s, double w_e, int depth)
     {
@@ -573,7 +630,6 @@ public class Main4Activity extends Activity {
         //return weights.get(1);
         return weights;
     }
-
 
 
 }

@@ -27,7 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/merge"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:onClick="first_image"/>
 
     <ImageView
         android:id="@+id/img2"
@@ -43,7 +44,8 @@
         app:layout_constraintBottom_toTopOf="@+id/img3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img1" />
+        app:layout_constraintTop_toBottomOf="@+id/img1"
+        android:onClick="second_image"/>
 
     <ImageView
         android:id="@+id/img3"
@@ -59,7 +61,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img2" />
+        app:layout_constraintTop_toBottomOf="@+id/img2"
+        android:onClick="last_image"/>
 
 
 

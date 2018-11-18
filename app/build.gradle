@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "net.sourceforge.opencamera"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
 
         renderscriptTargetApi 20
